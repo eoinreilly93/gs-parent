@@ -11,12 +11,14 @@
 	<packaging>pom</packaging>
 
 	<properties>
+		<h2.version>2.1.214</h2.version>
+		<java.version>19</java.version>
+		<lombok.version>1.18.24</lombok.version>
 		<maven.compiler.source>19</maven.compiler.source>
 		<maven.compiler.target>19</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>19</java.version>
-		<testcontainers.version>1.17.6</testcontainers.version>
 		<spring.boot.version>3.0.1</spring.boot.version>
+		<testcontainers.version>1.17.6</testcontainers.version>
 	</properties>
 
 	<modules>
@@ -48,6 +50,11 @@
 				<version>${spring.boot.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-logging</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-core</artifactId>
 				<version>${spring.boot.version}</version>
@@ -72,9 +79,18 @@
 			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
-				<version>${spring.boot.version}</version>
-				<optional>true</optional>
+				<version>${lombok.version}</version>
+				<scope>provided</scope>
 			</dependency>
+
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<!-- TEST DEPENDENCIES -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-test</artifactId>
