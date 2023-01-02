@@ -1,4 +1,6 @@
 product-service/
+purchasing-service/
+gs-common/
 
 HELP.md
 target/
