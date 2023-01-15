@@ -14,11 +14,13 @@
     <properties>
         <h2.version>2.1.214</h2.version>
         <java.version>19</java.version>
+        <json.version>20220924</json.version>
         <lombok.version>1.18.24</lombok.version>
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>3.0.1</spring.boot.version>
+        <surefire.version>3.0.0-M7</surefire.version>
         <testcontainers.version>1.17.6</testcontainers.version>
     </properties>
 
@@ -93,6 +95,13 @@
                 <scope>runtime</scope>
             </dependency>
 
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${json.version}</version>
+            </dependency>
+
+
             <!-- TEST DEPENDENCIES -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -149,6 +158,11 @@
                             </exclude>
                         </excludes>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
