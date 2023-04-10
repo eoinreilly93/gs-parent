@@ -8,8 +8,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,11 +19,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "ORDER_ID", nullable = false)
+    private UUID orderId;
 
     @Column(name = "STATUS", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -32,7 +37,7 @@ public class Order {
     private BigDecimal price;
 
     @Column(name = "PRODUCT_IDS", nullable = false)
-    private List<Integer> productIds;
+    private String productIds;
 
     //TODO: Add additional fields such as name, address etc.
 

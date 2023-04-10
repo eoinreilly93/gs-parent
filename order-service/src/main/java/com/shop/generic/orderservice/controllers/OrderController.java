@@ -31,6 +31,7 @@ public class OrderController {
             @RequestBody final OrderCreationDTO orderCreationDTO) {
         log.info("Creating order");
         final OrderResponseDTO responseDTO = this.orderService.createOrder(orderCreationDTO);
+        log.info("Created order with order id: {}", responseDTO.orderId());
         return ResponseEntity.ok(this.restApiResponseFactory.createSuccessResponse(responseDTO));
     }
 }

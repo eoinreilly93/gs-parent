@@ -12,6 +12,8 @@ import com.shop.generic.common.dtos.PurchaseProductDTO;
 import com.shop.generic.common.enums.OrderStatus;
 import com.shop.generic.common.rest.response.RestApiResponse;
 import com.shop.generic.common.rest.response.RestApiResponseFactory;
+import com.shop.generic.orderservice.services.OrderService;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -44,13 +46,17 @@ class OrderControllerTest {
     @MockBean
     private RestApiResponseFactory restApiResponseFactory;
 
+    @MockBean
+    private OrderService orderService;
+
     @Test
     @DisplayName("Should create an order")
     void createOrder() throws Exception {
 
         //Given
-        final PurchaseProductDTO purchaseDTO = new PurchaseProductDTO(1, 10);
-        final PurchaseProductDTO purchaseDTO2 = new PurchaseProductDTO(2, 50);
+        final PurchaseProductDTO purchaseDTO = new PurchaseProductDTO(1, 10, BigDecimal.TEN);
+        final PurchaseProductDTO purchaseDTO2 = new PurchaseProductDTO(2, 50,
+                BigDecimal.valueOf(49.99));
 
         final OrderCreationDTO orderCreationDTO = new OrderCreationDTO(
                 List.of(purchaseDTO, purchaseDTO2));
@@ -61,6 +67,8 @@ class OrderControllerTest {
         final RestApiResponse<OrderResponseDTO> mockApiResponse = new RestApiResponse<>(null, null,
                 orderResponseDTO,
                 LocalDateTime.now());
+
+        given(orderService.createOrder(orderCreationDTO)).willReturn(orderResponseDTO);
 
         given(restApiResponseFactory.createSuccessResponse(
                 any(OrderResponseDTO.class)))
