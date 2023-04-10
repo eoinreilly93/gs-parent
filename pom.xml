@@ -28,6 +28,7 @@
         <module>gs-common</module>
         <module>product-service</module>
         <module>purchasing-service</module>
+        <module>order-service</module>
     </modules>
 
     <dependencyManagement>
