@@ -19,13 +19,23 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final ShippingService shippingService;
 
-    public OrderService(final OrderRepository orderRepository) {
+    public OrderService(final OrderRepository orderRepository,
+            final ShippingService shippingService) {
         this.orderRepository = orderRepository;
+        this.shippingService = shippingService;
     }
 
-    public OrderResponseDTO createOrder(final OrderCreationDTO orderCreationDTO) {
+    public OrderResponseDTO createShippingOrder(final OrderCreationDTO orderCreationDTO) {
         final UUID orderId = UUID.randomUUID();
+        final Order order = createOrder(orderId, orderCreationDTO);
+        saveOrder(order);
+        createAndSendShippingRequest(order);
+        return new OrderResponseDTO(orderId, OrderStatus.CREATED);
+    }
+
+    private Order createOrder(final UUID orderId, final OrderCreationDTO orderCreationDTO) {
         final BigDecimal orderCost = orderCreationDTO.purchaseProductDTOS().stream().map(
                         PurchaseProductDTO::price)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -42,13 +52,16 @@ public class OrderService {
                 .collect(Collectors.joining(","));
         order.setProductIds(productIdsAsString);
         order.setOrderId(orderId);
-
-        saveOrder(order);
-        return new OrderResponseDTO(orderId, OrderStatus.CREATED);
+        return order;
     }
 
     private void saveOrder(final Order order) {
         this.orderRepository.save(order);
         log.info("Persisted order {} to the database", order.getOrderId());
+    }
+
+
+    private void createAndSendShippingRequest(final Order order) {
+        log.info("Creating shipping request");
     }
 }

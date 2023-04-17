@@ -1,6 +1,7 @@
 package com.shop.generic.orderservice.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.shop.generic.common.enums.OrderStatus;
@@ -59,5 +60,46 @@ class OrderRepositoryTest {
         //Then
         assertThat(persistedOrder).isEqualTo(order);
         assertEquals(persistedOrder.getProductIds(), "1,2,3");
+    }
+
+    @Test
+    @DisplayName("Cannot save order with null price")
+    void saveOrderWithNullPrice() {
+        // Given
+        final UUID orderId = UUID.randomUUID();
+        final String productIds = "P01,P02,P03";
+        final OrderStatus status = OrderStatus.CREATED;
+
+        assertThatThrownBy(() -> {
+            final Order order = new Order(orderId, null, productIds, status);
+        }).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    @DisplayName("Cannot save order with null productIds")
+    void saveOrderWithNullProductIds() {
+        // Given
+        final UUID orderId = UUID.randomUUID();
+        final BigDecimal price = new BigDecimal("100.00");
+        final OrderStatus status = OrderStatus.CREATED;
+
+        // When & Then
+        assertThatThrownBy(() -> {
+            final Order order = new Order(orderId, price, null, status);
+        }).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    @DisplayName("Cannot save order with null status")
+    void saveOrderWithNullStatus() {
+        // Given
+        final UUID orderId = UUID.randomUUID();
+        final BigDecimal price = new BigDecimal("100.00");
+        final String productIds = "P01,P02,P03";
+
+        // When & Then
+        assertThatThrownBy(() -> {
+            new Order(orderId, price, productIds, null);
+        }).isInstanceOf(NullPointerException.class);
     }
 }

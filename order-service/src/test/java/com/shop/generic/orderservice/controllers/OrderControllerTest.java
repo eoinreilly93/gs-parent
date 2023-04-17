@@ -68,7 +68,7 @@ class OrderControllerTest {
                 orderResponseDTO,
                 LocalDateTime.now());
 
-        given(orderService.createOrder(orderCreationDTO)).willReturn(orderResponseDTO);
+        given(orderService.createShippingOrder(orderCreationDTO)).willReturn(orderResponseDTO);
 
         given(restApiResponseFactory.createSuccessResponse(
                 any(OrderResponseDTO.class)))
