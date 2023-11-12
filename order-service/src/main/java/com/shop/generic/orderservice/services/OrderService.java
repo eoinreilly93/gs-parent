@@ -36,6 +36,9 @@ public class OrderService {
     }
 
     private Order createOrder(final UUID orderId, final OrderCreationDTO orderCreationDTO) {
+        if (orderCreationDTO.purchaseProductDTOS().isEmpty()) {
+            throw new RuntimeException("An order cannot be created with no products");
+        }
         final BigDecimal orderCost = orderCreationDTO.purchaseProductDTOS().stream().map(
                         PurchaseProductDTO::price)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -63,5 +66,6 @@ public class OrderService {
 
     private void createAndSendShippingRequest(final Order order) {
         log.info("Creating shipping request");
+        shippingService.createShippingRequest(order);
     }
 }
