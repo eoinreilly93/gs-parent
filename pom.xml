@@ -13,11 +13,11 @@
 
     <properties>
         <h2.version>2.1.214</h2.version>
-        <java.version>19</java.version>
+        <java.version>17</java.version>
         <json.version>20220924</json.version>
         <lombok.version>1.18.24</lombok.version>
-        <maven.compiler.source>19</maven.compiler.source>
-        <maven.compiler.target>19</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>3.0.1</spring.boot.version>
         <surefire.version>3.0.0-M7</surefire.version>
