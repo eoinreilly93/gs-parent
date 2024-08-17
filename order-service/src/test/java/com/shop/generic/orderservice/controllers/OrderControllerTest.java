@@ -61,7 +61,8 @@ class OrderControllerTest {
         final OrderCreationDTO orderCreationDTO = new OrderCreationDTO(
                 List.of(purchaseDTO, purchaseDTO2));
 
-        final OrderResponseDTO orderResponseDTO = new OrderResponseDTO(UUID.randomUUID(),
+        final UUID orderId = UUID.randomUUID();
+        final OrderResponseDTO orderResponseDTO = new OrderResponseDTO(orderId,
                 OrderStatus.CREATED);
 
         final RestApiResponse<OrderResponseDTO> mockApiResponse = new RestApiResponse<>(null, null,
@@ -76,12 +77,14 @@ class OrderControllerTest {
 
         //When
         final MockHttpServletResponse response = this.mockMvc.perform(
-                        post("/orders/create").contentType(MediaType.APPLICATION_JSON)
+                        post("/orders").contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(orderCreationDTO)))
                 .andReturn().getResponse();
 
         //Then
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.getHeader("location")).isEqualTo(
+                String.format("http://localhost/orders/%s", orderId));
         assertThat(response.getContentAsString()).isEqualTo(
                 jacksonTester.write(mockApiResponse).getJson());
     }
