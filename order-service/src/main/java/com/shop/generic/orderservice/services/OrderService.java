@@ -39,8 +39,8 @@ public class OrderService {
         if (orderCreationDTO.purchaseProductDTOS().isEmpty()) {
             throw new RuntimeException("An order cannot be created with no products");
         }
-        final BigDecimal orderCost = orderCreationDTO.purchaseProductDTOS().stream().map(
-                        PurchaseProductDTO::price)
+        final BigDecimal orderCost = orderCreationDTO.purchaseProductDTOS().stream()
+                .map(product -> product.price().multiply(BigDecimal.valueOf(product.quantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         final Order order = new Order();
