@@ -3,8 +3,8 @@ package com.shop.generic.orderservice.services;
 import com.shop.generic.common.dtos.OrderCreationDTO;
 import com.shop.generic.common.dtos.OrderResponseDTO;
 import com.shop.generic.common.dtos.PurchaseProductDTO;
+import com.shop.generic.common.entities.Order;
 import com.shop.generic.common.enums.OrderStatus;
-import com.shop.generic.orderservice.entities.Order;
 import com.shop.generic.orderservice.repositories.OrderRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -66,6 +66,6 @@ public class OrderService {
 
     private void createAndSendShippingRequest(final Order order) {
         log.info("Creating shipping request");
-        shippingService.createShippingRequest(order);
+        shippingService.createOrderShippingRequest(order);
     }
 }

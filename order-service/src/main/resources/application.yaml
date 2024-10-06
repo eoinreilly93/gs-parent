@@ -1,14 +1,16 @@
 spring:
+  application:
+    name: Order-Service
   datasource:
     url: jdbc:h2:mem:orderdb
     username: sa
     password: password
     driverClassName: org.h2.Driver
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     # Disable hibernate auto schema creation
     hibernate:
       ddl-auto: none
+    database-platform: org.hibernate.dialect.H2Dialect
   h2:
     console.enabled: true
   # Makes console log output colourful
@@ -17,6 +19,11 @@ spring:
       enabled: ALWAYS
   lifecycle:
     timeout-per-shutdown-phase: 20s
+  kafka:
+    create-topics: true
+    bootstrap-servers: "localhost:9092"
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 server:
   port: 8083

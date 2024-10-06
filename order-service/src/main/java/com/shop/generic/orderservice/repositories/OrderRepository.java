@@ -1,7 +1,7 @@
 package com.shop.generic.orderservice.repositories;
 
 
-import com.shop.generic.orderservice.entities.Order;
+import com.shop.generic.common.entities.Order;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

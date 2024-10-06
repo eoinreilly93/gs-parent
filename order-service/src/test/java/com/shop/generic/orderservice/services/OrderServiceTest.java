@@ -12,8 +12,8 @@ import static org.mockito.Mockito.verify;
 import com.shop.generic.common.dtos.OrderCreationDTO;
 import com.shop.generic.common.dtos.OrderResponseDTO;
 import com.shop.generic.common.dtos.PurchaseProductDTO;
+import com.shop.generic.common.entities.Order;
 import com.shop.generic.common.enums.OrderStatus;
-import com.shop.generic.orderservice.entities.Order;
 import com.shop.generic.orderservice.repositories.OrderRepository;
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -66,7 +66,7 @@ class OrderServiceTest {
         assertEquals("1,2", savedOrder.getProductIds());
 
         verify(orderRepository).save(any(Order.class));
-        verify(shippingService).createShippingRequest(any(Order.class));
+        verify(shippingService).createOrderShippingRequest(any(Order.class));
     }
 
     @Test
@@ -117,6 +117,6 @@ class OrderServiceTest {
         assertEquals("Database error", exception.getMessage());
 
         // Verify that shipping request was not made due to the exception
-        verify(shippingService, never()).createShippingRequest(any(Order.class));
+        verify(shippingService, never()).createOrderShippingRequest(any(Order.class));
     }
 }
