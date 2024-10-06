@@ -2,7 +2,7 @@ package com.shop.generic.orderservice.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.shop.generic.common.configurations.kafka.KafkaProducerConfiguration;
+import com.shop.generic.common.CommonKafkaProducerAutoConfiguration;
 import com.shop.generic.common.entities.Order;
 import com.shop.generic.common.enums.OrderStatus;
 import com.shop.generic.common.kmos.OrderKMO;
@@ -40,7 +40,7 @@ import org.springframework.test.annotation.DirtiesContext;
  * We use @DirtiesContext so that the topic is cleared after each test.
  */
 @SpringBootTest(classes = {ShippingService.class, OrderProducer.class,
-        KafkaProducerConfiguration.class})
+        CommonKafkaProducerAutoConfiguration.class})
 @EmbeddedKafka(partitions = 1, topics = {"orders"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ShippingServiceTest {
