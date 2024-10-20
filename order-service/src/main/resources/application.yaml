@@ -24,6 +24,9 @@ spring:
     bootstrap-servers: "localhost:9092"
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  threads:
+    virtual:
+      enabled: true
 
 server:
   port: 8083
