@@ -8,6 +8,7 @@ import com.shop.generic.common.enums.OrderStatus;
 import com.shop.generic.common.kmos.OrderKMO;
 import com.shop.generic.orderservice.kafka.OrderProducer;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -76,7 +77,7 @@ class ShippingServiceTest {
     void testCreateOrderShippingRequest_singleOrder() {
         // Create an Order
         final Order order = new Order(UUID.randomUUID(), new BigDecimal("100.00"), "1,2,3",
-                OrderStatus.CREATED);
+                OrderStatus.CREATED, "London", LocalDateTime.now());
 
         // When and order is sent to the topic
         shippingService.createOrderShippingRequest(order);
@@ -96,7 +97,7 @@ class ShippingServiceTest {
         // Generate and send 50 orders
         for (int i = 0; i < 50; i++) {
             final Order order = new Order(UUID.randomUUID(), new BigDecimal("100.00"), "123,456",
-                    OrderStatus.CREATED);
+                    OrderStatus.CREATED, "London", LocalDateTime.now());
             orders.add(order);
 
             // Given

@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: Shipping-Service
+  datasource:
+    url: jdbc:h2:mem:shippingdb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    # Disable hibernate auto schema creation
+    hibernate:
+      ddl-auto: none
+  h2:
+    console.enabled: true
+  # Makes console log output colourful
+  output:
+    ansi:
+      enabled: ALWAYS
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  kafka:
+    consumer:
+      group-id: orders-group
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        "[spring.json.trusted.packages]": "com.shop.generic.common.kmos"
+    bootstrap-servers: "localhost:9092"
+  threads:
+    virtual:
+      enabled: true
+  main:
+    web-application-type: none
+

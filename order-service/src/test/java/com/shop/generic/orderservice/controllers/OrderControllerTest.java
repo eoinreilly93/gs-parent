@@ -59,7 +59,7 @@ class OrderControllerTest {
                 BigDecimal.valueOf(49.99));
 
         final OrderCreationDTO orderCreationDTO = new OrderCreationDTO(
-                List.of(purchaseDTO, purchaseDTO2));
+                List.of(purchaseDTO, purchaseDTO2), "London");
 
         final UUID orderId = UUID.randomUUID();
         final OrderResponseDTO orderResponseDTO = new OrderResponseDTO(orderId,

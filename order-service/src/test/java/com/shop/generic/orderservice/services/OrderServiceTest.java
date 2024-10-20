@@ -45,7 +45,8 @@ class OrderServiceTest {
         // Given
         final PurchaseProductDTO product1 = new PurchaseProductDTO(1, 5, new BigDecimal("10.00"));
         final PurchaseProductDTO product2 = new PurchaseProductDTO(2, 2, new BigDecimal("14.99"));
-        final OrderCreationDTO orderCreationDTO = new OrderCreationDTO(List.of(product1, product2));
+        final OrderCreationDTO orderCreationDTO = new OrderCreationDTO(List.of(product1, product2),
+                "London");
 
         // When
         final OrderResponseDTO orderResponseDTO = orderService.createShippingOrder(
@@ -85,7 +86,8 @@ class OrderServiceTest {
     @DisplayName("Given an order creation request with no products, when creating a shipping order, then should throw a RuntimeException")
     void testCreateShippingOrder_EmptyPurchaseProducts() {
         // Given
-        final OrderCreationDTO orderCreationDTO = new OrderCreationDTO(Collections.emptyList());
+        final OrderCreationDTO orderCreationDTO = new OrderCreationDTO(Collections.emptyList(),
+                "London");
 
         // When
         final RuntimeException exception = assertThrows(RuntimeException.class,
@@ -102,7 +104,7 @@ class OrderServiceTest {
     void testCreateShippingOrder_FailureInRepository() {
         // Arrange
         final PurchaseProductDTO product1 = new PurchaseProductDTO(1, 2, new BigDecimal("10.00"));
-        final OrderCreationDTO orderCreationDTO = new OrderCreationDTO(List.of(product1));
+        final OrderCreationDTO orderCreationDTO = new OrderCreationDTO(List.of(product1), "London");
 
         doThrow(new RuntimeException("Database error")).when(orderRepository)
                 .save(any(Order.class));

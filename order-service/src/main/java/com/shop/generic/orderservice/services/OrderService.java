@@ -8,6 +8,7 @@ import com.shop.generic.common.enums.OrderStatus;
 import com.shop.generic.orderservice.repositories.OrderRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -55,6 +56,8 @@ public class OrderService {
                 .collect(Collectors.joining(","));
         order.setProductIds(productIdsAsString);
         order.setOrderId(orderId);
+        order.setCity(orderCreationDTO.city());
+        order.setCreationDate(LocalDateTime.now());
         return order;
     }
 

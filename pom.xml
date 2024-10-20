@@ -36,6 +36,7 @@
         <module>product-service</module>
         <module>purchasing-service</module>
         <module>order-service</module>
+        <module>shipping-service</module>
     </modules>
 
     <dependencyManagement>

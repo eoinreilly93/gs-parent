@@ -35,7 +35,8 @@ class OrderProducerTest {
                 UUID.randomUUID(),
                 BigDecimal.valueOf(100.0),
                 "123,124",
-                OrderStatus.CREATED
+                OrderStatus.CREATED,
+                "London"
         );
         // Prepare a future result
         final CompletableFuture<SendResult<String, OrderKMO>> future = new CompletableFuture<>();

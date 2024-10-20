@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.shop.generic.common.entities.Order;
 import com.shop.generic.common.enums.OrderStatus;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,8 @@ class OrderRepositoryTest {
         order.setPrice(BigDecimal.valueOf(2030.55));
         order.setProductIds("1,2,3");
         order.setStatus(OrderStatus.CREATED);
+        order.setCreationDate(LocalDateTime.now());
+        order.setCity("London");
 
         //When
         assertThat(order.getId()).isNull();
@@ -56,6 +59,8 @@ class OrderRepositoryTest {
         order.setPrice(BigDecimal.valueOf(2030.55));
         order.setProductIds("1,2,3");
         order.setStatus(OrderStatus.CREATED);
+        order.setCreationDate(LocalDateTime.now());
+        order.setCity("London");
         this.testEntityManager.persist(order);
 
         //When
@@ -75,7 +80,8 @@ class OrderRepositoryTest {
         final OrderStatus status = OrderStatus.CREATED;
 
         assertThatThrownBy(() -> {
-            final Order order = new Order(orderId, null, productIds, status);
+            final Order order = new Order(orderId, null, productIds, status, "London",
+                    LocalDateTime.now());
         }).isInstanceOf(NullPointerException.class);
     }
 
@@ -89,7 +95,8 @@ class OrderRepositoryTest {
 
         // When & Then
         assertThatThrownBy(() -> {
-            final Order order = new Order(orderId, price, null, status);
+            final Order order = new Order(orderId, price, null, status, "London",
+                    LocalDateTime.now());
         }).isInstanceOf(NullPointerException.class);
     }
 
@@ -103,7 +110,7 @@ class OrderRepositoryTest {
 
         // When & Then
         assertThatThrownBy(() -> {
-            new Order(orderId, price, productIds, null);
+            new Order(orderId, price, productIds, null, "London", LocalDateTime.now());
         }).isInstanceOf(NullPointerException.class);
     }
 }
