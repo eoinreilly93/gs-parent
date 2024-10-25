@@ -6,11 +6,13 @@ import com.shop.generic.common.dtos.PurchaseProductDTO;
 import com.shop.generic.common.entities.Order;
 import com.shop.generic.common.enums.OrderStatus;
 import com.shop.generic.orderservice.dtos.OrderDetailsDTO;
+import com.shop.generic.orderservice.exceptions.OrderNotFoundException;
 import com.shop.generic.orderservice.repositories.OrderRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -38,17 +40,20 @@ public class OrderService {
     }
 
     public OrderStatusDTO updateOrder(final UUID orderId, final OrderStatus newStatus) {
-        //TODO: Check the order exists, if it doesn't throw exception
-        final Order order = this.orderRepository.findByOrderId(orderId);
-        order.setStatus(newStatus);
-        this.orderRepository.save(order);
+        final Optional<Order> order = this.orderRepository.findByOrderId(orderId);
+
+        if (order.isEmpty()) {
+            throw new RuntimeException(String.format("Order with id %s not found", orderId));
+        }
+        order.get().setStatus(newStatus);
+        this.orderRepository.save(order.get());
         log.info("Order {} status updated to {}", orderId, newStatus);
-        return new OrderStatusDTO(order.getOrderId(), order.getStatus());
+        return new OrderStatusDTO(order.get().getOrderId(), order.get().getStatus());
     }
 
     private Order createOrder(final UUID orderId, final OrderCreationDTO orderCreationDTO) {
         if (orderCreationDTO.purchaseProductDTOS().isEmpty()) {
-            throw new RuntimeException("An order cannot be created with no products");
+            throw new OrderNotFoundException("An order cannot be created with no products");
         }
         final BigDecimal orderCost = orderCreationDTO.purchaseProductDTOS().stream()
                 .map(product -> product.price().multiply(BigDecimal.valueOf(product.quantity())))
@@ -72,8 +77,9 @@ public class OrderService {
     }
 
     public OrderDetailsDTO fetchOrderDetails(final UUID orderId) {
-        final Order order = this.orderRepository.findByOrderId(orderId);
-        return new OrderDetailsDTO(order);
+        final Optional<Order> order = this.orderRepository.findByOrderId(orderId);
+        return new OrderDetailsDTO(order.orElseThrow(() -> new OrderNotFoundException(
+                String.format("Order with id %s not found", orderId))));
     }
 
     private void saveOrder(final Order order) {

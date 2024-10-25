@@ -8,6 +8,7 @@ import com.shop.generic.common.entities.Order;
 import com.shop.generic.common.enums.OrderStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,11 +65,11 @@ class OrderRepositoryTest {
         this.testEntityManager.persist(order);
 
         //When
-        final Order persistedOrder = this.orderRepository.findByOrderId(orderId);
+        final Optional<Order> persistedOrder = this.orderRepository.findByOrderId(orderId);
 
         //Then
-        assertThat(persistedOrder).isEqualTo(order);
-        assertEquals(persistedOrder.getProductIds(), "1,2,3");
+        assertThat(persistedOrder.get()).isEqualTo(order);
+        assertEquals(persistedOrder.get().getProductIds(), "1,2,3");
     }
 
     @Test
