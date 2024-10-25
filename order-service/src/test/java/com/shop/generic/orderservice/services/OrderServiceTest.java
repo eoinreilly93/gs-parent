@@ -10,7 +10,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.shop.generic.common.dtos.OrderCreationDTO;
-import com.shop.generic.common.dtos.OrderResponseDTO;
+import com.shop.generic.common.dtos.OrderStatusDTO;
 import com.shop.generic.common.dtos.PurchaseProductDTO;
 import com.shop.generic.common.entities.Order;
 import com.shop.generic.common.enums.OrderStatus;
@@ -49,12 +49,12 @@ class OrderServiceTest {
                 "London");
 
         // When
-        final OrderResponseDTO orderResponseDTO = orderService.createShippingOrder(
+        final OrderStatusDTO orderStatusDTO = orderService.createShippingOrder(
                 orderCreationDTO);
 
         // Then
-        assertNotNull(orderResponseDTO);
-        assertEquals(OrderStatus.CREATED, orderResponseDTO.status());
+        assertNotNull(orderStatusDTO);
+        assertEquals(OrderStatus.CREATED, orderStatusDTO.status());
 
         // Capture the saved order
         final ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);

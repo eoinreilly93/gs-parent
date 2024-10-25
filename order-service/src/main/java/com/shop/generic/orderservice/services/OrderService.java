@@ -1,10 +1,11 @@
 package com.shop.generic.orderservice.services;
 
 import com.shop.generic.common.dtos.OrderCreationDTO;
-import com.shop.generic.common.dtos.OrderResponseDTO;
+import com.shop.generic.common.dtos.OrderStatusDTO;
 import com.shop.generic.common.dtos.PurchaseProductDTO;
 import com.shop.generic.common.entities.Order;
 import com.shop.generic.common.enums.OrderStatus;
+import com.shop.generic.orderservice.dtos.OrderDetailsDTO;
 import com.shop.generic.orderservice.repositories.OrderRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,12 +29,21 @@ public class OrderService {
         this.shippingService = shippingService;
     }
 
-    public OrderResponseDTO createShippingOrder(final OrderCreationDTO orderCreationDTO) {
+    public OrderStatusDTO createShippingOrder(final OrderCreationDTO orderCreationDTO) {
         final UUID orderId = UUID.randomUUID();
         final Order order = createOrder(orderId, orderCreationDTO);
         saveOrder(order);
         createAndSendShippingRequest(order);
-        return new OrderResponseDTO(orderId, OrderStatus.CREATED);
+        return new OrderStatusDTO(orderId, OrderStatus.CREATED);
+    }
+
+    public OrderStatusDTO updateOrder(final UUID orderId, final OrderStatus newStatus) {
+        //TODO: Check the order exists, if it doesn't throw exception
+        final Order order = this.orderRepository.findByOrderId(orderId);
+        order.setStatus(newStatus);
+        this.orderRepository.save(order);
+        log.info("Order {} status updated to {}", orderId, newStatus);
+        return new OrderStatusDTO(order.getOrderId(), order.getStatus());
     }
 
     private Order createOrder(final UUID orderId, final OrderCreationDTO orderCreationDTO) {
@@ -59,6 +69,11 @@ public class OrderService {
         order.setCity(orderCreationDTO.city());
         order.setCreationDate(LocalDateTime.now());
         return order;
+    }
+
+    public OrderDetailsDTO fetchOrderDetails(final UUID orderId) {
+        final Order order = this.orderRepository.findByOrderId(orderId);
+        return new OrderDetailsDTO(order);
     }
 
     private void saveOrder(final Order order) {

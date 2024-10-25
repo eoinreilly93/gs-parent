@@ -1,6 +1,6 @@
 package com.shop.shippingservice.entities;
 
-import com.shop.shippingservice.enums.ShipmentStatus;
+import com.shop.generic.common.enums.OrderStatus;
 import com.shop.shippingservice.repositories.UUIDListConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -45,7 +45,7 @@ public class Shipment {
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
     @NonNull
-    private ShipmentStatus status;
+    private OrderStatus status;
 
     @NonNull
     @Column(name = "CREATED", nullable = false)

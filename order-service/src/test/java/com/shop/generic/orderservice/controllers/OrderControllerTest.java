@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shop.generic.common.dtos.OrderCreationDTO;
-import com.shop.generic.common.dtos.OrderResponseDTO;
+import com.shop.generic.common.dtos.OrderStatusDTO;
 import com.shop.generic.common.dtos.PurchaseProductDTO;
 import com.shop.generic.common.enums.OrderStatus;
 import com.shop.generic.common.rest.response.RestApiResponse;
@@ -38,7 +38,7 @@ class OrderControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private JacksonTester<RestApiResponse<OrderResponseDTO>> jacksonTester;
+    private JacksonTester<RestApiResponse<OrderStatusDTO>> jacksonTester;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -62,17 +62,17 @@ class OrderControllerTest {
                 List.of(purchaseDTO, purchaseDTO2), "London");
 
         final UUID orderId = UUID.randomUUID();
-        final OrderResponseDTO orderResponseDTO = new OrderResponseDTO(orderId,
+        final OrderStatusDTO orderStatusDTO = new OrderStatusDTO(orderId,
                 OrderStatus.CREATED);
 
-        final RestApiResponse<OrderResponseDTO> mockApiResponse = new RestApiResponse<>(null, null,
-                orderResponseDTO,
+        final RestApiResponse<OrderStatusDTO> mockApiResponse = new RestApiResponse<>(null, null,
+                orderStatusDTO,
                 LocalDateTime.now());
 
-        given(orderService.createShippingOrder(orderCreationDTO)).willReturn(orderResponseDTO);
+        given(orderService.createShippingOrder(orderCreationDTO)).willReturn(orderStatusDTO);
 
         given(restApiResponseFactory.createSuccessResponse(
-                any(OrderResponseDTO.class)))
+                any(OrderStatusDTO.class)))
                 .willReturn(mockApiResponse);
 
         //When
