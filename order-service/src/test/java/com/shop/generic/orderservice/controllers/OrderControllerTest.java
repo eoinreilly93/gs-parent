@@ -3,7 +3,10 @@ package com.shop.generic.orderservice.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shop.generic.common.dtos.OrderCreationDTO;
@@ -12,6 +15,7 @@ import com.shop.generic.common.dtos.PurchaseProductDTO;
 import com.shop.generic.common.enums.OrderStatus;
 import com.shop.generic.common.rest.response.RestApiResponse;
 import com.shop.generic.common.rest.response.RestApiResponseFactory;
+import com.shop.generic.orderservice.dtos.OrderDetailsDTO;
 import com.shop.generic.orderservice.services.OrderService;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -38,7 +42,7 @@ class OrderControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private JacksonTester<RestApiResponse<OrderStatusDTO>> jacksonTester;
+    private JacksonTester<RestApiResponse<?>> jacksonTester;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -88,4 +92,63 @@ class OrderControllerTest {
         assertThat(response.getContentAsString()).isEqualTo(
                 jacksonTester.write(mockApiResponse).getJson());
     }
+
+    @Test
+    @DisplayName("Should update order status")
+    void updateOrderStatus() throws Exception {
+        // Given
+        final UUID orderId = UUID.randomUUID();
+        final OrderStatus newStatus = OrderStatus.SHIPPED;
+        final OrderStatusDTO orderStatusDTO = new OrderStatusDTO(orderId, newStatus);
+
+        final RestApiResponse<OrderStatusDTO> mockApiResponse = new RestApiResponse<>(null, null,
+                orderStatusDTO, LocalDateTime.now());
+
+        given(orderService.updateOrder(orderId, newStatus)).willReturn(orderStatusDTO);
+        given(restApiResponseFactory.createSuccessResponse(any(OrderStatusDTO.class)))
+                .willReturn(mockApiResponse);
+
+        // When
+        final MockHttpServletResponse response = this.mockMvc.perform(
+                        put("/orders/order/{orderId}/{newStatus}", orderId, newStatus)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+
+        // Then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo(
+                jacksonTester.write(mockApiResponse).getJson());
+    }
+
+    @Test
+    @DisplayName("Should fetch order status")
+    void getOrderStatus() throws Exception {
+        // Given
+        final UUID orderId = UUID.randomUUID();
+        final OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(orderId, BigDecimal.TEN, "1,2",
+                OrderStatus.SHIPPED, "London", LocalDateTime.now());
+
+        final RestApiResponse<OrderDetailsDTO> mockApiResponse = new RestApiResponse<>(null, null,
+                orderDetailsDTO, LocalDateTime.now());
+
+        given(orderService.fetchOrderDetails(orderId)).willReturn(orderDetailsDTO);
+        given(restApiResponseFactory.createSuccessResponse(any(OrderDetailsDTO.class)))
+                .willReturn(mockApiResponse);
+
+        // When
+        final MockHttpServletResponse response = this.mockMvc.perform(
+                        get("/orders/order/{orderId}/status", orderId)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+
+        // Then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo(
+                jacksonTester.write(mockApiResponse).getJson());
+    }
+
 }

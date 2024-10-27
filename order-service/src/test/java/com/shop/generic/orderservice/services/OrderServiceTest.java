@@ -8,16 +8,22 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.shop.generic.common.dtos.OrderCreationDTO;
 import com.shop.generic.common.dtos.OrderStatusDTO;
 import com.shop.generic.common.dtos.PurchaseProductDTO;
 import com.shop.generic.common.entities.Order;
 import com.shop.generic.common.enums.OrderStatus;
+import com.shop.generic.orderservice.dtos.OrderDetailsDTO;
+import com.shop.generic.orderservice.exceptions.OrderNotFoundException;
 import com.shop.generic.orderservice.repositories.OrderRepository;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -120,5 +126,87 @@ class OrderServiceTest {
 
         // Verify that shipping request was not made due to the exception
         verify(shippingService, never()).createOrderShippingRequest(any(Order.class));
+    }
+
+    @Test
+    @DisplayName("Given a valid order ID, when fetching order details, then should return OrderDetailsDTO")
+    void testFetchOrderDetails_ValidOrderId() {
+        // Arrange
+        final UUID orderId = UUID.randomUUID();
+        final Order order = new Order();
+        order.setOrderId(orderId);
+        order.setPrice(new BigDecimal("100.00"));
+        order.setStatus(OrderStatus.CREATED);
+        order.setProductIds("1,2");
+        order.setCity("London");
+        order.setCreationDate(LocalDateTime.now());
+
+        // Mock the repository to return the order
+        when(orderRepository.findByOrderId(orderId)).thenReturn(Optional.of(order));
+
+        // Act
+        final OrderDetailsDTO orderDetailsDTO = orderService.fetchOrderDetails(orderId);
+
+        // Assert
+        assertNotNull(orderDetailsDTO);
+        assertEquals(orderId, orderDetailsDTO.orderId());
+        assertEquals(order.getPrice(), orderDetailsDTO.price());
+        assertEquals(order.getStatus(), orderDetailsDTO.status());
+        assertEquals(order.getProductIds(), orderDetailsDTO.productIds());
+        assertEquals(order.getCity(), orderDetailsDTO.city());
+    }
+
+    @Test
+    @DisplayName("Given an invalid order ID, when fetching order details, then should throw OrderNotFoundException")
+    void testFetchOrderDetails_InvalidOrderId() {
+        // Given
+        final UUID invalidOrderId = UUID.randomUUID();
+        when(orderRepository.findByOrderId(invalidOrderId)).thenReturn(Optional.empty());
+
+        // When/Then
+        final OrderNotFoundException exception = assertThrows(OrderNotFoundException.class,
+                () -> orderService.fetchOrderDetails(invalidOrderId));
+        assertEquals(String.format("Order with id %s not found", invalidOrderId),
+                exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Given a valid order ID and status, when updating order, then should update status and return OrderStatusDTO")
+    void testUpdateOrder_ValidOrderId() {
+        // Give
+        final UUID orderId = UUID.randomUUID();
+        final Order order = new Order();
+        order.setOrderId(orderId);
+        order.setStatus(OrderStatus.CREATED);
+
+        when(orderRepository.findByOrderId(orderId)).thenReturn(Optional.of(order));
+
+        // When
+        final OrderStatusDTO result = orderService.updateOrder(orderId, OrderStatus.SHIPPED);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(orderId, result.orderId());
+        assertEquals(OrderStatus.SHIPPED, result.status());
+
+        verify(orderRepository, times(1)).save(order);
+        assertEquals(OrderStatus.SHIPPED, order.getStatus());
+    }
+
+    @Test
+    @DisplayName("Given an invalid order ID, when updating order, then should throw RuntimeException")
+    void testUpdateOrder_InvalidOrderId() {
+        // Given
+        final UUID invalidOrderId = UUID.randomUUID();
+        when(orderRepository.findByOrderId(invalidOrderId)).thenReturn(Optional.empty());
+
+        // When
+        final RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> orderService.updateOrder(invalidOrderId, OrderStatus.SHIPPED));
+
+        // Then
+        assertEquals(String.format("Order with id %s not found", invalidOrderId),
+                exception.getMessage());
+        verify(orderRepository, never()).save(any(Order.class));
     }
 }
