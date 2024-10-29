@@ -153,32 +153,12 @@
 
     </dependencies>
 
-    <!--    <build>-->
-    <!--        <plugins>-->
-    <!--            <plugin>-->
-    <!--                <groupId>net.serenity-bdd.maven.plugins</groupId>-->
-    <!--                <artifactId>serenity-maven-plugin</artifactId>-->
-    <!--                <version>3.6.12</version>-->
-    <!--                <configuration>-->
-    <!--                    <reports>single-page-html</reports>-->
-    <!--                </configuration>-->
-    <!--                <executions>-->
-    <!--                    <execution>-->
-    <!--                        <id>serenity-reports</id>-->
-    <!--                        <phase>post-integration-test</phase>-->
-    <!--                        <goals>-->
-    <!--                            <goal>aggregate</goal>-->
-    <!--                        </goals>-->
-    <!--                    </execution>-->
-    <!--                </executions>-->
-    <!--                <dependencies>-->
-    <!--                    <dependency>-->
-    <!--                        <groupId>net.serenity-bdd</groupId>-->
-    <!--                        <artifactId>serenity-single-page-report</artifactId>-->
-    <!--                        <version>3.6.22</version>-->
-    <!--                    </dependency>-->
-    <!--                </dependencies>-->
-    <!--            </plugin>-->
-    <!--        </plugins>-->
-    <!--    </build>-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
