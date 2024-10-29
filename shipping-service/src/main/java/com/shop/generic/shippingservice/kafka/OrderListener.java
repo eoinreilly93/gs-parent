@@ -1,7 +1,7 @@
-package com.shop.shippingservice.kafka;
+package com.shop.generic.shippingservice.kafka;
 
 import com.shop.generic.common.kmos.OrderKMO;
-import com.shop.shippingservice.services.ShippingService;
+import com.shop.generic.shippingservice.services.ShippingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaHandler;

@@ -1,4 +1,4 @@
-package com.shop.shippingservice;
+package com.shop.generic.shippingservice;
 
 import com.shop.generic.common.CommonKafkaProducerAutoConfiguration;
 import org.springframework.boot.SpringApplication;

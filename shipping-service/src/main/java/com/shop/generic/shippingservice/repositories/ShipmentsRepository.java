@@ -1,7 +1,7 @@
-package com.shop.shippingservice.repositories;
+package com.shop.generic.shippingservice.repositories;
 
 import com.shop.generic.common.enums.OrderStatus;
-import com.shop.shippingservice.entities.Shipment;
+import com.shop.generic.shippingservice.entities.Shipment;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.repository.ListCrudRepository;

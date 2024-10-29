@@ -1,4 +1,4 @@
-package com.shop.shippingservice.kafka;
+package com.shop.generic.shippingservice.kafka;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,10 +9,10 @@ import com.shop.generic.common.entities.Order;
 import com.shop.generic.common.enums.OrderStatus;
 import com.shop.generic.common.kmos.OrderKMO;
 import com.shop.generic.common.rest.request.RestTemplateUtil;
-import com.shop.shippingservice.entities.Shipment;
-import com.shop.shippingservice.repositories.ShipmentsRepository;
-import com.shop.shippingservice.services.OrderStatusUpdatesService;
-import com.shop.shippingservice.services.ShippingService;
+import com.shop.generic.shippingservice.entities.Shipment;
+import com.shop.generic.shippingservice.repositories.ShipmentsRepository;
+import com.shop.generic.shippingservice.services.OrderStatusUpdatesService;
+import com.shop.generic.shippingservice.services.ShippingService;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;

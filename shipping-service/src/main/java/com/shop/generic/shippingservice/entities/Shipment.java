@@ -1,7 +1,7 @@
-package com.shop.shippingservice.entities;
+package com.shop.generic.shippingservice.entities;
 
 import com.shop.generic.common.enums.OrderStatus;
-import com.shop.shippingservice.repositories.UUIDListConverter;
+import com.shop.generic.shippingservice.repositories.UUIDListConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;

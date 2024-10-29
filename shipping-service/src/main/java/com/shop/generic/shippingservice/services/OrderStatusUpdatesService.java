@@ -1,4 +1,4 @@
-package com.shop.shippingservice.services;
+package com.shop.generic.shippingservice.services;
 
 import com.shop.generic.common.dtos.OrderStatusDTO;
 import com.shop.generic.common.enums.OrderStatus;

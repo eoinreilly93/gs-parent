@@ -1,9 +1,9 @@
-package com.shop.shippingservice.services;
+package com.shop.generic.shippingservice.services;
 
 import com.shop.generic.common.enums.OrderStatus;
 import com.shop.generic.common.kmos.OrderKMO;
-import com.shop.shippingservice.entities.Shipment;
-import com.shop.shippingservice.repositories.ShipmentsRepository;
+import com.shop.generic.shippingservice.entities.Shipment;
+import com.shop.generic.shippingservice.repositories.ShipmentsRepository;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;

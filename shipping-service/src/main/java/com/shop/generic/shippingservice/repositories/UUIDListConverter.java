@@ -1,4 +1,4 @@
-package com.shop.shippingservice.repositories;
+package com.shop.generic.shippingservice.repositories;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

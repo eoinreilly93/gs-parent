@@ -1,6 +1,6 @@
-package com.shop.shippingservice.scheduler;
+package com.shop.generic.shippingservice.scheduler;
 
-import com.shop.shippingservice.services.ShippingService;
+import com.shop.generic.shippingservice.services.ShippingService;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
