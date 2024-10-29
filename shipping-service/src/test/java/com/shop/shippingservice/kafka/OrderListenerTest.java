@@ -38,6 +38,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -52,6 +53,7 @@ import org.springframework.web.client.RestTemplate;
 @EntityScan(basePackages = "com.shop.shippingservice.entities")
 @AutoConfigureDataJpa
 @EmbeddedKafka(partitions = 1, topics = {"orders"})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @Slf4j
 class OrderListenerTest {
 
