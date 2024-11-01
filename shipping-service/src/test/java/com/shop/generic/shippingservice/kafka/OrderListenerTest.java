@@ -48,8 +48,8 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootTest(classes = {OrderListener.class, CommonKafkaConsumerAutoConfiguration.class,
         ShippingService.class, OrderStatusUpdatesService.class, RestTemplateUtil.class,
         RestTemplate.class, KafkaAutoConfiguration.class})
-@EnableJpaRepositories(basePackages = "com.shop.shippingservice.repositories")
-@EntityScan(basePackages = "com.shop.shippingservice.entities")
+@EnableJpaRepositories(basePackages = "com.shop.generic.shippingservice.repositories")
+@EntityScan(basePackages = "com.shop.generic.shippingservice.entities")
 @AutoConfigureDataJpa
 @EmbeddedKafka(partitions = 1, topics = {"orders"})
 @Slf4j
