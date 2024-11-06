@@ -10,3 +10,6 @@
 [submodule "shipping-service"]
 	path = shipping-service
 	url = git@github.com:eoinreilly93/shipping-service.git
+[submodule "product-service"]
+	path = product-service
+	url = git@github.com:eoinreilly93/product-service.git
