@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shop.generic.common.auth.MicroserviceAuthorisationService;
 import com.shop.generic.common.dtos.OrderCreationDTO;
 import com.shop.generic.common.dtos.OrderStatusDTO;
 import com.shop.generic.common.dtos.PurchaseProductDTO;
@@ -24,6 +25,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
@@ -33,7 +35,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(OrderController.class)
+@WebMvcTest(value = OrderController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @AutoConfigureJsonTesters
 @DisplayName("Requests to the orders controller")
 class OrderControllerTest {
@@ -52,6 +54,9 @@ class OrderControllerTest {
 
     @MockBean
     private OrderService orderService;
+
+    @MockBean
+    private MicroserviceAuthorisationService microserviceAuthorisationService;
 
     @Test
     @DisplayName("Should create an order")
@@ -94,7 +99,7 @@ class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("Should update order status")
+    @DisplayName("Should update order status when it has necessary permissions")
     void updateOrderStatus() throws Exception {
         // Given
         final UUID orderId = UUID.randomUUID();
@@ -107,6 +112,7 @@ class OrderControllerTest {
         given(orderService.updateOrder(orderId, newStatus)).willReturn(orderStatusDTO);
         given(restApiResponseFactory.createSuccessResponse(any(OrderStatusDTO.class)))
                 .willReturn(mockApiResponse);
+        given(microserviceAuthorisationService.canServiceUpdateOrderStatus()).willReturn(true);
 
         // When
         final MockHttpServletResponse response = this.mockMvc.perform(

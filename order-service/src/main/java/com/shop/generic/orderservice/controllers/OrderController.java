@@ -1,5 +1,6 @@
 package com.shop.generic.orderservice.controllers;
 
+import com.shop.generic.common.auth.MicroserviceAuthorisationService;
 import com.shop.generic.common.dtos.OrderCreationDTO;
 import com.shop.generic.common.dtos.OrderStatusDTO;
 import com.shop.generic.common.enums.OrderStatus;
@@ -28,11 +29,14 @@ public class OrderController {
 
     private final RestApiResponseFactory restApiResponseFactory;
     private final OrderService orderService;
+    private final MicroserviceAuthorisationService microserviceAuthorisationService;
 
     public OrderController(final RestApiResponseFactory restApiResponseFactory,
-            final OrderService orderService) {
+            final OrderService orderService,
+            final MicroserviceAuthorisationService microserviceAuthorisationService) {
         this.restApiResponseFactory = restApiResponseFactory;
         this.orderService = orderService;
+        this.microserviceAuthorisationService = microserviceAuthorisationService;
     }
 
     @PostMapping
@@ -65,6 +69,12 @@ public class OrderController {
             @PathVariable final UUID orderId,
             @PathVariable final OrderStatus newStatus) {
         log.info("Updating status for order {}", orderId);
+        if (!this.microserviceAuthorisationService.canServiceUpdateOrderStatus()) {
+            log.warn("Microservice is not authorized to update order status");
+            throw new IllegalArgumentException(
+                    "Microservice is not authorized to update order status");
+        }
+
         final OrderStatusDTO responseDTO = this.orderService.updateOrder(orderId, newStatus);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(this.restApiResponseFactory.createSuccessResponse(responseDTO));
