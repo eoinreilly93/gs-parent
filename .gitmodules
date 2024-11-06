@@ -1,0 +1,12 @@
+[submodule "gs-common"]
+	path = gs-common
+	url = git@github.com:eoinreilly93/gs-common.git
+[submodule "purchasing-service"]
+	path = purchasing-service
+	url = git@github.com:eoinreilly93/purchasing-service.git
+[submodule "order-service"]
+	path = order-service
+	url = git@github.com:eoinreilly93/order-service.git
+[submodule "shipping-service"]
+	path = shipping-service
+	url = git@github.com:eoinreilly93/shipping-service.git
