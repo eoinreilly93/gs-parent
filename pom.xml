@@ -21,7 +21,7 @@
     <properties>
         <!--        <h2.version>2.1.214</h2.version>-->
         <java.version>21</java.version>
-        <!--        <json.version>20220924</json.version>-->
+        <json.version>20220924</json.version>
         <!--        <lombok.version>1.18.24</lombok.version>-->
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -49,11 +49,11 @@
     <dependencyManagement>
         <dependencies>
 
-            <!--            <dependency>-->
-            <!--                <groupId>org.json</groupId>-->
-            <!--                <artifactId>json</artifactId>-->
-            <!--                <version>${json.version}</version>-->
-            <!--            </dependency>-->
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${json.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
