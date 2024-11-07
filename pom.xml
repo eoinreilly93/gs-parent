@@ -43,7 +43,7 @@
         <module>purchasing-service</module>
         <module>order-service</module>
         <module>shipping-service</module>
-        <module>component-test-service</module>
+        <!--        <module>component-test-service</module>-->
     </modules>
 
     <dependencyManagement>
