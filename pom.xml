@@ -134,6 +134,13 @@
                 <scope>test</scope>
             </dependency>
 
+            <!-- Using standalone version as this is recommended with spring boot projects due to jetty incompatibilities, as per the wiremock docs -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-contract-wiremock</artifactId>
+                <version>${spring-cloud-contract-wiremock.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.jeasy</groupId>
                 <artifactId>easy-random-core</artifactId>
@@ -266,6 +273,31 @@
                                     ${project.build.directory}/jacoco/jacoco-merged-test-coverage-report
                                 </outputDirectory>
                             </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>net.serenity-bdd.maven.plugins</groupId>
+                    <artifactId>serenity-maven-plugin</artifactId>
+                    <version>${serentiy.version}</version>
+                    <configuration>
+                        <tags>${tags}</tags>
+                        <reports>single-page-html</reports>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>net.serenity-bdd</groupId>
+                            <artifactId>serenity-single-page-report</artifactId>
+                            <version>${serentiy.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <id>serenity-reports</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>aggregate</goal>
+                            </goals>
                         </execution>
                     </executions>
                 </plugin>
