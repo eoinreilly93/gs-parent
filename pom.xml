@@ -30,6 +30,7 @@
         <serentiy.version>4.1.20</serentiy.version>
         <spring-cloud-contract-wiremock.version>4.1.4</spring-cloud-contract-wiremock.version>
         <junit-platform-suite.version>1.10.3</junit-platform-suite.version>
+        <spring-boot-admin-client-version>3.1.5</spring-boot-admin-client-version>
     </properties>
 
     <modules>
@@ -73,6 +74,12 @@
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${spring-boot-admin-client-version}</version>
             </dependency>
 
             <!-- TEST DEPENDENCIES -->
