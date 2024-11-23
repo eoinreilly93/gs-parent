@@ -47,6 +47,12 @@ services:
     networks:
       - kafka-net
 
+  spring-boot-admin:
+    container_name: spring-boot-admin
+    image: spring-boot-admin-server:latest
+    ports:
+      - "6113:6113"
+
 networks:
   kafka-net:
     driver: bridge
