@@ -31,6 +31,8 @@
         <spring-cloud-contract-wiremock.version>4.1.4</spring-cloud-contract-wiremock.version>
         <junit-platform-suite.version>1.10.3</junit-platform-suite.version>
         <spring-boot-admin-client-version>3.1.5</spring-boot-admin-client-version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.6.0
+        </springdoc-openapi-starter-webmvc-ui.version>
     </properties>
 
     <modules>
@@ -80,6 +82,12 @@
                 <groupId>de.codecentric</groupId>
                 <artifactId>spring-boot-admin-starter-client</artifactId>
                 <version>${spring-boot-admin-client-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
             </dependency>
 
             <!-- TEST DEPENDENCIES -->
